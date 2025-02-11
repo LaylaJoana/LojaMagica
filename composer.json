@@ -1,0 +1,13 @@
+{
+    "name": "layla/loja-magica",
+    "autoload": {
+        "psr-4": {
+            "Src\\": "src/"
+        },
+        "files": [
+            "src/Utils/View.php",
+            "src/Utils/Flash.php"
+        ]
+    },
+    "require": {}
+}
