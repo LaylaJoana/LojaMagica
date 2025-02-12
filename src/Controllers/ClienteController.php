@@ -102,9 +102,13 @@ class ClienteController {
 
     public function update(): void
     {
-       var_dump($_POST);
-       die;
-    }
+       $cliente = Cliente::update($_POST);
 
+       if($cliente) {
+           flash('cliente_sucesso', 'Cliente atualizado com sucesso!');
+           header('Location: /clientes');
+           exit;
+       }
+    }
 
 }

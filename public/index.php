@@ -22,7 +22,7 @@ $router->addRoute('POST', 'clientes/new', [ClienteController::class, 'new']);
 $router->addRoute('GET', 'clientes/edit/{id}', [ClienteController::class, 'edit']);
 $router->addRoute('GET', 'clientes/deleteview/{id}', [ClienteController::class, 'deleteView']);
 $router->addRoute('GET', 'clientes/delete/{id}', [ClienteController::class, 'delete']);
-$router->addRoute('POST', 'clientes/update}', [ClienteController::class, 'update']);
+$router->addRoute('POST', 'clientes/update', [ClienteController::class, 'update']);
 // $router->dispatch($request);
 
 require '../src/Views/app.php';

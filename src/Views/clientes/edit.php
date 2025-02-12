@@ -23,10 +23,8 @@
     <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
         <h1 class="text-2xl font-bold mb-4 text-center text-green-600">Editar Cliente</h1>
         <form action="/clientes/update" method="POST">
-            <!-- Campo oculto para o ID do cliente -->
-            <input type="hidden" id="id" name="acao" value="<?= $cliente->id ?>">
+            <input type="hidden" id="id" name="id" value="<?= $cliente->id ?>">
 
-            <!-- Nome -->
             <div class="mb-6">
                 <label for="nome" class="block text-gray-700 text-sm font-semibold mb-2">Nome:</label>
                 <input type="text" id="nome" name="nome" class="w-full bg-transparent text-sm text-gray-700 border border-slate-200 rounded p-3 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm" value="<?= $cliente->nome ?>" required>
