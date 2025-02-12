@@ -1,0 +1,16 @@
+body {
+    background-color: #e6f7e6; /* Cor de fundo verde claro */
+}
+
+.header, .footer, .button, .table-header, .alert {
+    background-color: #4caf50; /* Cor verde */
+    color: white;
+}
+
+.button:hover, .table-header:hover, .alert:hover {
+    background-color: #45a049; /* Cor verde escuro */
+}
+
+.table-row:hover {
+    background-color: #d4edda; /* Cor verde claro */
+}

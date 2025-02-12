@@ -19,6 +19,8 @@
                 <div>
                     <a href="/clientes" class="text-white hover:text-gray-200 px-4 py-2 rounded">Clientes</a>
                     <a href="/pedidos" class="text-white hover:text-gray-200 px-4 py-2 rounded">Pedidos</a>
+                    <a href="/produtos" class="text-white hover:text-gray-200 px-4 py-2 rounded">Produtos</a>
+                    <a href="/importacoes" class="text-white hover:text-gray-200 px-4 py-2 rounded">Importacoes</a>
                     <a href="/promocoes" class="text-white hover:text-gray-200 px-4 py-2 rounded">Promoções</a>
                 </div>
             </div>

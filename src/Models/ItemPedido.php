@@ -15,6 +15,6 @@ class ItemPedido extends Model {
 
     public function produto()
     {
-        return $this->hasOne(Produto::class, 'produto_id', 'id');
+        return $this->belongsTo(Produto::class, 'produto_id', 'id');
     }
 }

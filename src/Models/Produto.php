@@ -8,9 +8,7 @@ class Produto extends Model {
 
     protected $attributes = [
         'nome',
-        'descricao',
         'preco',
-        'estoque',
-        'criado_em'
+        'estoque'
     ];
 }

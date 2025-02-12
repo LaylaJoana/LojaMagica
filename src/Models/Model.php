@@ -43,6 +43,8 @@ abstract class Model
 
     public static function create($dados, $columns = null): bool|object
     {
+
+        
         $con = Connection::getConn();
 
         $attrs = self::getAttrs($columns);
@@ -51,10 +53,12 @@ abstract class Model
         $sql = $con->prepare(
             'INSERT INTO ' . (new static)->table . " ( $attrs ) VALUES ( $binds )"
         );
+      
 
         $sql = self::bindValues($sql, $dados);
+      
         $res = $sql->execute();
-
+     
         if ($res) {
             return self::find($con->lastInsertId());
         }
@@ -64,11 +68,14 @@ abstract class Model
 
     public static function update($dados, $columns = null): bool|object
     {
-        $con = Connection::getConn();
 
-        $sql = "UPDATE " . (new static)->table . " SET " . self::getAttrsBinds($columns) . " WHERE id = :id";
+       
+        $con = Connection::getConn();
+        $attrsBinds = self::getAttrsBinds($columns);
+        $sql = "UPDATE " . (new static)->table . " SET " . $attrsBinds . " WHERE id = :id";
         $sql = $con->prepare($sql);
         $sql = self::bindValues($sql, $dados);
+
         $res = $sql->execute();
 
         if ($res) {
@@ -94,10 +101,30 @@ abstract class Model
         return true;
     }
 
+    public static function beginTransaction()
+    {
+        $db = Connection::getConn();
+        $db->beginTransaction();
+    }
+
+    public static function commit()
+    {
+        $db = Connection::getConn();
+        $db->commit();
+    }
+
+    public static function rollBack()
+    {
+        $db = Connection::getConn();
+        $db->rollBack();
+    }
+
     private static function bindValues($prepare, $values): mixed
     {
-
         foreach ($values as $key => $value) {
+            if (is_array($value)) {
+                $value = implode(',', $value);
+            }
             $bind = ':' . $key;
             $prepare->bindValue($bind, $value);
         }
@@ -223,5 +250,21 @@ abstract class Model
         }
 
         return $array;
+    }
+
+    public static function where($column, $value)
+    {
+        $con = Connection::getConn();
+        $sql = "SELECT * FROM " . (new static)->table . " WHERE $column = :value";
+        $stmt = $con->prepare($sql);
+        $stmt->bindValue(':value', $value);
+        $stmt->execute();
+
+        $result = [];
+        while ($row = $stmt->fetchObject(get_class(new static))) {
+            $result[] = $row;
+        }
+
+        return $result;
     }
 }

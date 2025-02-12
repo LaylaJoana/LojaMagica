@@ -6,7 +6,6 @@
     <title>Cadastrar Cliente</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script>
-        // Validação simples de e-mail
         function validateEmail() {
             const email = document.getElementById('email').value;
             const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -23,7 +22,6 @@
     <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
         <h1 class="text-2xl font-bold mb-4 text-center text-green-600">Cadastrar Cliente</h1>
         <form action="/clientes/new" method="POST">
-            <!-- Nome -->
             <div class="mb-6">
                 <label for="nome" class="block text-gray-700 text-sm font-semibold mb-2">Nome:</label>
                 <input type="text" id="nome" name="nome" class="w-full bg-transparent text-sm text-gray-700 border border-slate-200 rounded p-3 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm" required>

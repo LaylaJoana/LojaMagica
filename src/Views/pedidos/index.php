@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestão de Pedidos</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .status-verde {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+    </style>
 </head>
 <?php
 require_once __DIR__ . '/../../../vendor/autoload.php';
@@ -24,7 +32,7 @@ if (hasFlash('pedido_sucesso')) {
     <div class="max-w-6xl mx-auto px-4 py-6">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-gray-800">Pedidos</h1>
-            <a href="/pedidos/create" class="bg-green-500 text-white px-5 py-2 rounded-lg shadow-md hover:bg-green-600 transition">Cadastrar Pedido</a>
+            <a href="/pedidos/create" class="button bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition">Cadastrar Pedido</a>
         </div>
         
         <div class="bg-white shadow-lg rounded-lg p-6">
@@ -34,7 +42,8 @@ if (hasFlash('pedido_sucesso')) {
                         <th class="py-3 px-4 text-left">Id</th>
                         <th class="py-3 px-4 text-left">Cliente</th>
                         <th class="py-3 px-4 text-left">Status</th>
-                        <th class="py-3 px-4 text-left">Data do Pedido</th>
+                        <th class="py-3 px-4 text-left">Valor</th>
+                        <th class="py-3 px-4 text-left">Data </th> 
                         <th class="py-3 px-4 text-left">Ações</th>
                     </tr>
                 </thead>
@@ -48,10 +57,22 @@ if (hasFlash('pedido_sucesso')) {
                     <tr class="border-b hover:bg-gray-100 transition">
                         <td class="py-3 px-4 "><?= $pedido->id ?></td>
                         <td class="py-3 px-4 "><?= $pedido->cliente()->nome ?></td>
-                        <td class="py-3 px-4 "><?= $pedido->status ?></td>
+                        <td class="py-3 px-4 ">
+                            <span class="status-verde"><?= $pedido->status ?></span>
+                        </td>
+                        <td class="py-3 px-4 "><?= $pedido->valor_total ?></td>
                         <td class="py-3 px-4 "><?= date('d/m/Y H:i', strtotime($pedido->data_pedido)) ?></td>
                         <td class="py-3 px-4 ">
-                            <button class="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition" onclick="openModal()">Opções</button>
+                            <a href="/pedidos/edit/<?= $pedido->id ?>" class="text-blue-500 hover:text-blue-700 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 13.5V17h3.5l9.5-9.5a2.121 2.121 0 00-3-3L9 13.5z" />
+                                </svg>
+                            </a>
+                            <a href="/pedidos/deleteview/<?= $pedido->id ?>" class="text-red-500 hover:text-red-700 transition ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -61,23 +82,6 @@ if (hasFlash('pedido_sucesso')) {
         </div>
     </div>
     
-    <div id="modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 class="text-xl font-semibold mb-4">Opções</h2>
-            <button class="bg-green-500 text-white px-4 py-2 rounded-lg w-full mb-2 hover:bg-green-600 transition">Visualizar</button>
-            <button class="bg-green-500 text-white px-4 py-2 rounded-lg w-full mb-2 hover:bg-green-600 transition">Editar</button>
-            <button class="bg-green-500 text-white px-4 py-2 rounded-lg w-full mb-2 hover:bg-green-600 transition">Deletar</button>
-            <button class="bg-green-500 text-white px-4 py-2 rounded-lg w-full hover:bg-green-600 transition" onclick="closeModal()">Fechar</button>
-        </div>
-    </div>
-    
-    <script>
-        function openModal() {
-            document.getElementById('modal').classList.remove('hidden');
-        }
-        function closeModal() {
-            document.getElementById('modal').classList.add('hidden');
-        }
-    </script>
+<?php include __DIR__ . '/../layouts/footer.php'; ?>
 </body>
 </html>

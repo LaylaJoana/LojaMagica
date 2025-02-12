@@ -56,7 +56,7 @@ class ClienteController {
             flash('cliente_erro', 'Erro ao cadastrar cliente.');
             header('Location: /clientes/create');
             exit;
-        } catch (Exception $e) {echo $e->getMessage();exit;
+        } catch (Exception $e) {
             error_log('Erro ao cadastrar cliente: ' . $e->getMessage());
             flash('cliente_erro', 'Erro ao cadastrar o cliente. Tente novamente.');
             header('Location: /clientes/create');
