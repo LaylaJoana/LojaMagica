@@ -12,9 +12,8 @@ abstract class Model
     protected $attributes;
 
     public static function find($id)
-    {
+    {     
         $con = Connection::getConn();
-
         $sql = "SELECT * FROM " . (new static)->table . " WHERE id = :id";
         $sql = $con->prepare($sql);
         $sql->bindValue(':id', $id, PDO::PARAM_INT);

@@ -22,17 +22,25 @@ class Router
     {
         $uri = $request->getUri();
         $method = $request->getMethod();
-
+    
         foreach ($this->routes as $route) {
-            if ($route['method'] === $method && $route['uri'] === $uri) {
-                $controller = $route['action'][0];
-                $method = $route['action'][1];
-
-                call_user_func_array([new $controller, $method], [$request]);
-                return;
+            if ($route['method'] === $method) {
+                $pattern = preg_replace('/\{([^\/]+)\}/', '(?P<\1>[^\/]+)', $route['uri']);
+                $pattern = "@^" . $pattern . "$@D";
+    
+                if (preg_match($pattern, $uri, $matches)) {
+                    $controller = $route['action'][0];
+                    $action = $route['action'][1];
+                    $params = array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
+                    if (empty($params)) {
+                        $params = [$request];
+                    }
+                    call_user_func_array([new $controller, $action], array_values($params));
+                    return;
+                } 
             }
         }
-
+    
         echo "Route not defined!";
     }
 
