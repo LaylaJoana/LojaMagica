@@ -11,6 +11,7 @@ use Src\Controllers\PedidoController;
 use Src\Controllers\ClienteController;
 use Src\Controllers\ProdutoController;
 use Src\Controllers\PromocaoController;
+use Src\Controllers\ImportacaoController;
 
 $request = new Request();
 $router = new Router();
@@ -47,13 +48,7 @@ $router->addRoute('GET', 'promocoes/deleteview/{id}', [PromocaoController::class
 $router->addRoute('GET', 'promocoes/delete/{id}', [PromocaoController::class, 'delete']);
 $router->addRoute('POST', 'promocoes/update', [PromocaoController::class, 'update']);
 
-$router->addRoute('GET', 'importacao', [ProdutoController::class, 'index']);
-$router->addRoute('GET', 'importacao/create', [ProdutoController::class, 'create']);
-$router->addRoute('POST', 'importacoes/new', [ProdutoController::class, 'new']);
-$router->addRoute('GET', 'produtos/edit/{id}', [ProdutoController::class, 'edit']);
-$router->addRoute('GET', 'produtos/deleteview/{id}', [ProdutoController::class, 'deleteView']);
-$router->addRoute('GET', 'produtos/delete/{id}', [ProdutoController::class, 'delete']);
-$router->addRoute('POST', 'produtos/update', [ProdutoController::class, 'update']);
+$router->addRoute('GET', 'importacoes', [ImportacaoController::class, 'index']);
 
 
 
