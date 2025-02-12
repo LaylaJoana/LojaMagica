@@ -2,7 +2,7 @@
 <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
 <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Promoções</h1>
-        <a href="/promocoes/create" class="button bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition">Novo Produto</a>
+        <a href="/promocoes/create" class="button bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 transition">Nova Promoção</a>
     </div>
     <table class="min-w-full bg-white">
         <thead>

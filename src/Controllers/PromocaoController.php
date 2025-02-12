@@ -26,16 +26,17 @@ class PromocaoController {
     public function new(Request $request): void
     {
         $post = $request->getAllParams();
-
+       
         try {
-            $produto = Promocao::create([
+            $promocao = Promocao::create([
                 'nome' => trim($post['nome']),
                 'descricao' => trim($post['descricao']),
+                'desconto' => $post['desconto'],
                 'data_inicio' => trim($post['data_inicio']),
                 'data_fim' => trim($post['data_fim'])
             ]);
     
-            if ($produto) {
+            if ($promocao) {
                 flash('promocao_sucesso', 'Promoção cadastrada com sucesso!');
                 header('Location: /promocoes');
                 exit;

@@ -43,7 +43,7 @@ abstract class Model
 
     public static function create($dados, $columns = null): bool|object
     {
-
+  
         
         $con = Connection::getConn();
 
