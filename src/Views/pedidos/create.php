@@ -4,7 +4,7 @@
     <form action="/pedidos/store" method="POST">
         <div class="mb-6">
             <h2 class="text-xl font-semibold mb-2">Cliente</h2>
-            <div class="p-4 border rounded-lg bg-green-200">
+            <div class="p-4 border rounded-lg">
                 <label for="cliente" class="block text-gray-700">Cliente:</label>
                 <select name="cliente_id" id="cliente" class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer" required>
                     <?php foreach ($clientes as $cliente): ?>
@@ -16,7 +16,7 @@
 
         <div class="mb-6">
             <h2 class="text-xl font-semibold mb-2">Adicionar Produtos</h2>
-            <div class="p-4 border rounded-lg bg-green-200">
+            <div class="p-4 border rounded-lg">
                 <select id="product-select" class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
                     <option value="">Selecione um produto</option>
                     <?php foreach ($produtos as $produto): ?>
@@ -28,7 +28,7 @@
 
         <div class="mb-6">
             <h2 class="text-xl font-semibold mb-2">Produtos Selecionados</h2>
-            <div id="product-list" class="p-4 border rounded-lg bg-green-200">
+            <div id="product-list" class="p-4 border rounded-lg">
             </div>
         </div>
 
@@ -38,8 +38,6 @@
         </div>
     </form>
 </div>
-
-<?php include __DIR__ . '/../layouts/footer.php'; ?>
 
 <script>
     function updateTotal() {
@@ -92,5 +90,3 @@
         document.getElementById('product-select').addEventListener('change', addProduct);
     });
 </script>
-</body>
-</html>

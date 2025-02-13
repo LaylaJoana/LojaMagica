@@ -46,4 +46,12 @@ class Request
         $header = str_replace('-', '_', strtoupper($header));
         return isset($_SERVER['HTTP_' . $header]) ? $_SERVER['HTTP_' . $header] : null;
     }
+
+    public function setParams($params): void {
+        $this->params = $params;
+    }
+
+    public function getParams(): array {
+        return $this->params;
+    }
 }

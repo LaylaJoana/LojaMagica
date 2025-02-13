@@ -5,6 +5,8 @@ namespace Src\Controllers;
 use Exception;
 use Src\Core\Request;
 use Src\Core\Router;
+use Src\Database\Connection;
+use Src\Services\PedidoService;
 use Src\Models\Cliente;
 use Src\Models\ItemPedido;
 use Src\Models\Pedido;
@@ -12,6 +14,16 @@ use Src\Models\Produto;
 
 class PedidoController {
     
+    private $pedidoService;
+    
+    const EMAIL_CRIACAO = 'C';
+    const EMAIL_ATUALIZACAO = 'A';
+
+    public function __construct()
+    {
+        $this->pedidoService = new PedidoService();
+    }
+
     public function index(): void
     {
         view('/pedidos/index', [
@@ -32,40 +44,24 @@ class PedidoController {
         $post = $request->getAllParams();
 
         try {
-            $pedido = Pedido::create([
-                'cliente_id' => $post['cliente_id'],
-                'status' => 'pendente'
-            ]);
-    
-            if ($pedido) {
-                foreach ($post['produtos'] as $idproduto => $quantidade) {
-                    $produto = Produto::find($idproduto);
-        
-                    $item = ItemPedido::create([
-                        'pedido_id' => $pedido->id,
-                        'produto_id' => $produto->id,
-                        'quantidade' => $quantidade,
-                        'preco_unitario' => $produto->preco
-                    ]);
-        
-                    if ($item) {
-                        $updateEstoque = Produto::update([
-                            'id' => $produto->id,
-                            'estoque' => (int) $produto->estoque - $quantidade
-                        ], ['estoque']);
-                    }
-                }
-            }
+            Connection::beginTransaction();
+
+            $pedido = $this->pedidoService->criarPedido($post['cliente_id']);
+            $valor_total = $this->pedidoService->processarItensPedido($pedido, $post['produtos']);
+            $this->pedidoService->atualizarValorTotalPedido($pedido, $valor_total);
+            $this->pedidoService->enviarEmailConfirmacao($post['cliente_id'], $pedido, self::EMAIL_CRIACAO);
+
+            Connection::commit();
 
             flash('pedido_sucesso', 'Pedido cadastrado com sucesso!');
             header('location: /pedidos');
         } catch (Exception $e) {
+            Connection::rollBack();
             error_log('Erro ao cadastrar pedido: ' . $e->getMessage());
             flash('pedido_erro', 'Erro ao cadastrar o pedido. Tente novamente.');
             header('Location: /pedidos/create');
             exit;
         }
-        
     }
 
     public function edit($id): void
@@ -120,54 +116,21 @@ class PedidoController {
         }
 
         try {
+            Connection::beginTransaction();
 
-            Pedido::beginTransaction();
+            $pedido = $this->pedidoService->atualizarPedido($post);
+            $this->pedidoService->deletarItensPedido($post['id']);
+            $valor_total = $this->pedidoService->processarItensPedido($pedido, $post['produtos']);
+            $this->pedidoService->atualizarValorTotalPedido($pedido, $valor_total);
+            $this->pedidoService->enviarEmailConfirmacao($post['cliente_id'], $pedido, self::EMAIL_ATUALIZACAO);
 
-            $pedido = Pedido::update([
-                'id' => $post['id'],
-                'cliente_id' => $post['cliente_id'],
-                'status' => $post['status'],
-                'valor_total' => $post['valor_total']
-            ]);
-
-            if ($pedido) {
-                $itens = ItemPedido::where('pedido_id', $pedido->id);
-                foreach ($itens as $item) {
-                    ItemPedido::delete($item->id);
-                }
-
-                foreach ($post['produtos'] as $idProduto => $quantidade) {
-                    $produto = Produto::find($idProduto);
-
-                    if (!$produto || $quantidade <= 0) {
-                        throw new Exception('Produto inválido ou quantidade inválida.');
-                    }
-
-                    $item = ItemPedido::create([
-                        'pedido_id' => $pedido->id,
-                        'produto_id' => $produto->id,
-                        'quantidade' => $quantidade,
-                        'preco_unitario' => $produto->preco
-                    ]);
-
-                    if ($item) {
-                        Produto::update([
-                            'id' => $produto->id,
-                            'estoque' => (int) $produto->estoque - $quantidade
-                        ], ['estoque']);
-                    }
-                }
-            }
-
-            Pedido::commit();
+            Connection::commit();
 
             flash('pedido_sucesso', 'Pedido atualizado com sucesso!');
             header('Location: /pedidos');
             exit;
         } catch (Exception $e) {
-
-            Pedido::rollBack();
-            
+            Connection::rollBack();
             error_log('Erro ao atualizar pedido: ' . $e->getMessage());
             flash('pedido_erro', 'Erro ao atualizar o pedido. Tente novamente.');
             header('Location: /pedidos/edit/' . $post['id']);

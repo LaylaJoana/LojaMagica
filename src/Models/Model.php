@@ -43,8 +43,7 @@ abstract class Model
 
     public static function create($dados, $columns = null): bool|object
     {
-  
-        
+
         $con = Connection::getConn();
 
         $attrs = self::getAttrs($columns);
@@ -53,10 +52,10 @@ abstract class Model
         $sql = $con->prepare(
             'INSERT INTO ' . (new static)->table . " ( $attrs ) VALUES ( $binds )"
         );
-      
 
+        
         $sql = self::bindValues($sql, $dados);
-      
+        
         $res = $sql->execute();
      
         if ($res) {
@@ -100,25 +99,7 @@ abstract class Model
 
         return true;
     }
-
-    public static function beginTransaction()
-    {
-        $db = Connection::getConn();
-        $db->beginTransaction();
-    }
-
-    public static function commit()
-    {
-        $db = Connection::getConn();
-        $db->commit();
-    }
-
-    public static function rollBack()
-    {
-        $db = Connection::getConn();
-        $db->rollBack();
-    }
-
+    
     private static function bindValues($prepare, $values): mixed
     {
         foreach ($values as $key => $value) {

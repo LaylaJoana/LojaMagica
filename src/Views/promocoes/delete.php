@@ -9,7 +9,5 @@
             </div>
         </form>
 </div>
-
-<?php include __DIR__ . '/../layouts/footer.php'; ?>
 </body>
 </html>

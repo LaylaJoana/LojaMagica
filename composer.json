@@ -6,8 +6,12 @@
         },
         "files": [
             "src/Utils/View.php",
-            "src/Utils/Flash.php"
+            "src/Utils/Flash.php",
+            "src/Utils/Funcoes.php"
         ]
     },
-    "require": {}
+    "require": {
+        "phpoffice/phpspreadsheet": "^4.0",
+        "phpmailer/phpmailer": "^6.9"
+    }
 }

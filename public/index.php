@@ -36,24 +36,22 @@ $router->addRoute('GET', 'produtos', [ProdutoController::class, 'index']);
 $router->addRoute('GET', 'produtos/create', [ProdutoController::class, 'create']);
 $router->addRoute('POST','produtos/new', [ProdutoController::class, 'new']);
 $router->addRoute('GET', 'produtos/edit/{id}', [ProdutoController::class, 'edit']);
+$router->addRoute('POST', 'produtos/update', [ProdutoController::class, 'update']);
 $router->addRoute('GET', 'produtos/deleteview/{id}', [ProdutoController::class, 'deleteView']);
 $router->addRoute('GET', 'produtos/delete/{id}', [ProdutoController::class, 'delete']);
-$router->addRoute('PUT', 'produtos/update', [ProdutoController::class, 'update']);
 
 $router->addRoute('GET', 'promocoes', [PromocaoController::class, 'index']);
 $router->addRoute('GET', 'promocoes/create', [PromocaoController::class, 'create']);
 $router->addRoute('POST','promocoes/new', [PromocaoController::class, 'new']);
 $router->addRoute('GET', 'promocoes/edit/{id}', [PromocaoController::class, 'edit']);
+$router->addRoute('POST', 'promocoes/update', [PromocaoController::class, 'update']);
 $router->addRoute('GET', 'promocoes/deleteview/{id}', [PromocaoController::class, 'deleteView']);
 $router->addRoute('GET', 'promocoes/delete/{id}', [PromocaoController::class, 'delete']);
-$router->addRoute('POST', 'promocoes/update', [PromocaoController::class, 'update']);
 
 $router->addRoute('GET', 'importacoes', [ImportacaoController::class, 'index']);
+$router->addRoute('POST', 'importacoes/upload', [ImportacaoController::class, 'importar']);
+$router->addRoute('GET', 'importacoes/download/{id}', [ImportacaoController::class, 'download']);
 
 
-
-
-// $router->dispatch($request);
-
-require '../src/Views/app.php';
+require '../src/Views/layouts/app.php';
 ?>

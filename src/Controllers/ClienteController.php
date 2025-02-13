@@ -18,9 +18,7 @@ class ClienteController {
 
     public function create(): void
     {
-        view('/clientes/create', [
-            'clientes' => Cliente::all()
-        ]);
+        view('/clientes/create');
     }
 
     public function new(Request $request): void

@@ -11,4 +11,12 @@ class Produto extends Model {
         'preco',
         'estoque'
     ];
+
+    public function updateEstoque($valor)
+    {
+        $this::update([
+            'id' => $this->id,
+            'estoque' => (int) $this->estoque + $valor
+        ], ['estoque']);
+    }
 }

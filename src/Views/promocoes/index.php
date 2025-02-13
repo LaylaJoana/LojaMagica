@@ -23,8 +23,8 @@
                     <td class="py-2 px-4 border-b border-gray-200"><?= $promocao->nome ?></td>
                     <td class="py-2 px-4 border-b border-gray-200"><?= $promocao->desconto ?>%</td>
                     <td class="py-2 px-4 border-b border-gray-200"><?= $promocao->descricao ?></td>
-                    <td class="py-3 px-4 "><?= date('d/m/Y H:i', strtotime($promocao->data_inicio)) ?></td>
-                    <td class="py-3 px-4 "><?= date('d/m/Y H:i', strtotime($promocao->data_fim)) ?></td>
+                    <td class="py-3 px-4 "><?= date('d/m/Y', strtotime($promocao->data_inicio)) ?></td>
+                    <td class="py-3 px-4 "><?= date('d/m/Y', strtotime($promocao->data_fim)) ?></td>
 
                     <td class="py-3 px-4 ">
                         <a href="/promocoes/edit/<?= $promocao->id ?>" class="text-blue-500 hover:text-blue-700 transition">
@@ -43,7 +43,5 @@
         </tbody>
     </table>
 </div>
-
-<?php include __DIR__ . '/../layouts/footer.php'; ?>
 </body>
 </html>

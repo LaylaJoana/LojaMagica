@@ -69,6 +69,5 @@
         document.getElementById('modal').classList.add('hidden');
     }
 </script>
-<?php include __DIR__ . '/../layouts/footer.php'; ?>
 </body>
 </html>

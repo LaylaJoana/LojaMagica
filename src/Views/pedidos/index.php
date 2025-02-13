@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestão de Pedidos</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .status-verde {
             background-color: #d4edda;
@@ -15,8 +14,6 @@
     </style>
 </head>
 <?php
-require_once __DIR__ . '/../../../vendor/autoload.php';
-
 if (hasFlash('pedido_sucesso')) {
 ?>
 <div role="alert" class="mb-4 relative flex w-full p-3 text-sm text-white bg-green-600 rounded-md">
@@ -81,7 +78,5 @@ if (hasFlash('pedido_sucesso')) {
             </table>
         </div>
     </div>
-    
-<?php include __DIR__ . '/../layouts/footer.php'; ?>
 </body>
 </html>

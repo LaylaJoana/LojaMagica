@@ -8,4 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     '1276a898cba99888886f817fa1b48a65' => $baseDir . '/src/Utils/View.php',
     'ea43f2fe1a567ecae8f27b5b98ce228d' => $baseDir . '/src/Utils/Flash.php',
+    '26042f81363006ee3e2e91eed4be53d5' => $baseDir . '/src/Utils/Funcoes.php',
 );
