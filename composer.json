@@ -2,7 +2,8 @@
     "name": "layla/loja-magica",
     "autoload": {
         "psr-4": {
-            "Src\\": "src/"
+            "Src\\": "src/",
+            "Integration\\": "integration/"
         },
         "files": [
             "src/Utils/View.php",

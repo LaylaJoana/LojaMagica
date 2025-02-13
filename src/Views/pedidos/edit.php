@@ -1,6 +1,6 @@
 <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
     <h1 class="text-2xl font-bold mb-4">Editar Pedido</h1>
-    <form action="/pedidos/update" method="POST">
+    <form id="edit-order-form" action="/pedidos/update" method="POST">
         <input type="hidden" name="id" value="<?= $pedido->id ?>">
         <input type="hidden" id="total-input" name="valor_total" value="0.00">
         <div class="mb-6">
@@ -54,10 +54,21 @@
         </div>
 
         <div class="flex justify-between items-center mt-4">
-            <button type="submit" class="button bg-blue-500 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-700">Salvar Alterações</button>
+            <button type="button" onclick="validateForm()" class="button bg-blue-500 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-700">Salvar Alterações</button>
             <h3 class="text-lg font-semibold">Total: R$ <span id="total-value">0.00</span></h3>
     </form>
 </div>
+
+<script>
+    function validateForm() {
+        const currentStatus = '<?= $pedido->status ?>';
+        if (currentStatus === 'cancelado' || currentStatus === 'concluido') {
+            alert('O pedido não pode ser editado, pois o mesmo está cancelado ou concluído.');
+        } else {
+            document.getElementById('edit-order-form').submit();
+        }
+    }
+</script>
 </div>
 
 <script>

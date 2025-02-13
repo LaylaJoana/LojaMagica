@@ -5,6 +5,7 @@ namespace Src\Controllers;
 use Exception;
 use Src\Core\Excel;
 use Src\Core\Request;
+use Src\Core\Router;
 use Src\Core\SistemasArquivos;
 use Src\Models\Importacao;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -31,7 +32,80 @@ class ImportacaoController
         array_shift($dados);
 
         foreach ($dados as $dado) {
-            $this->processarLinha($dado);
+            $clienteNome = $dado[1];
+            $clienteEmail = $dado[2];
+            $pedidoProduto = $dado[3];
+            $pedidoData = $dado[4];
+            $pedidoValor = $dado[5];
+
+            if ($clienteNome && $clienteEmail) {
+                $cliente = Cliente::where('email', $clienteEmail);
+
+                if (!$cliente) {
+                    $cliente = Cliente::create([
+                        'nome' => $clienteNome,
+                        'email' => $clienteEmail,
+                        'telefone' => '',
+                        'endereco' => ''
+                    ]);
+                } else {
+                    $cliente = Cliente::update([
+                        'id' => $cliente[0]->id,
+                        'nome' => $clienteNome
+                    ], ['nome']);
+                }
+
+                if ($cliente && ($pedidoProduto && $pedidoData && (int) $pedidoValor)) {
+                    $existeEstePedido = Connection::executeSql('
+                        SELECT * FROM clientes c
+                        LEFT JOIN pedidos p ON c.id = p.cliente_id
+                        LEFT JOIN itens_pedido ip ON p.id = ip.pedido_id
+                        LEFT JOIN produtos pd ON pd.id = ip.produto_id
+                        WHERE c.id = ' . $cliente->id . ' && pd.nome = "' . $pedidoProduto . '" AND date(p.data_pedido) = "' . $pedidoData . '";
+                    ');
+
+                    if ($existeEstePedido) {
+                        continue;
+                    } else {
+                        $produto = Produto::where('nome', $pedidoProduto);
+
+                        $pedido = Pedido::create([
+                            'cliente_id' => $cliente->id,
+                            'status' => 'pendente',
+                            'valor_total' => $pedidoValor
+                        ]);
+
+                        $pedido->data_pedido = $pedidoData;
+                        $pedido->save();
+                        
+                        if ($produto) {
+                            $item = ItemPedido::create([
+                                'pedido_id' => $pedido->id,
+                                'produto_id' => $produto[0]->id,
+                                'quantidade' => 1,
+                                'preco_unitario' => $pedidoValor
+                            ]);
+
+                            if ($item && $pedidoData >= date('Y-m-d') ) {
+                                $produto[0]->updateEstoque(-1);
+                            }
+                        } else {
+                            $produto = Produto::create([
+                                'nome' => $pedidoProduto,
+                                'estoque' => 0,
+                                'preco' => $pedidoValor,
+                            ]);
+
+                            $item = ItemPedido::create([
+                                'pedido_id' => $pedido->id,
+                                'produto_id' => $produto->id,
+                                'quantidade' => 1,
+                                'preco_unitario' => $pedidoValor
+                            ]);
+                        }
+                    }
+                }
+            }
         }
 
         Importacao::create([
@@ -42,108 +116,13 @@ class ImportacaoController
         header('Location: /importacoes');
     }
 
-    private function processarLinha(array $dado): void
-    {
-        $cliente = $this->obterOuCriarCliente($dado[1], $dado[2]);
-        if ($cliente) {
-            $this->processarPedido($cliente, $dado[3], $dado[4], $dado[5]);
-        }
-    }
-
-    private function obterOuCriarCliente(string $nome, string $email): ?Cliente
-    {
-        if (empty($nome) || empty($email)) {
-            return null;
-        }
-
-        $cliente = Cliente::where('email', $email);
-        if (!$cliente) {
-            return Cliente::create([
-                'nome' => $nome,
-                'email' => $email,
-                'telefone' => '',
-                'endereco' => ''
-            ]);
-        }
-
-        Cliente::update([
-            'id' => $cliente[0]->id,
-            'nome' => $nome
-        ], ['nome']);
-
-        return $cliente[0];
-    }
-
-    private function processarPedido( $cliente, string $produtoNome, string $data, float $valor): void
-    {
-        if (empty($produtoNome) || empty($data) || $valor <= 0) {
-            return;
-        }
-      
-
-        if ($this->pedidoExiste($cliente->id, $produtoNome, $data)) {
-            return;
-        }
-
-        $produto = Produto::where('nome', $produtoNome);
-        $pedido = Pedido::create([
-            'cliente_id' => $cliente->id,
-            'status' => 'pendente',
-            'valor_total' => $valor
-        ]);
-
-        $pedido->data_pedido = $data;
-        $pedido->save();
-
-        if ($produto) {
-            $this->criarItemPedido($pedido->id, $produto[0]->id, $valor);
-            if ($data >= date('Y-m-d')) {
-                $produto[0]->updateEstoque(-1);
-            }
-        } else {
-            $produto = Produto::create([
-                'nome' => $produtoNome,
-                'estoque' => 0,
-                'preco' => $valor,
-            ]);
-            $this->criarItemPedido($pedido->id, $produto->id, $valor);
-        }
-    }
-
-    private function pedidoExiste(int $clienteId, string $produtoNome, string $data): bool
-    {
-        $query = '
-            SELECT * FROM clientes c
-            LEFT JOIN pedidos p ON c.id = p.cliente_id
-            LEFT JOIN itens_pedido ip ON p.id = ip.pedido_id
-            LEFT JOIN produtos pd ON pd.id = ip.produto_id
-            WHERE c.id = :clienteId AND pd.nome = :produtoNome AND date(p.data_pedido) = :data
-        ';
-        $params = [
-            'clienteId' => $clienteId,
-            'produtoNome' => $produtoNome,
-            'data' => $data
-        ];
-        return !empty(Connection::executeSql($query, $params));
-    }
-
-    private function criarItemPedido(int $pedidoId, int $produtoId, float $valor): void
-    {
-        ItemPedido::create([
-            'pedido_id' => $pedidoId,
-            'produto_id' => $produtoId,
-            'quantidade' => 1,
-            'preco_unitario' => $valor
-        ]);
-    }
-
     public function download($id): void
     {
         $importacao = Importacao::find($id);
         if (!$importacao) {
             throw new Exception('Arquivo não encontrado.');
         }
-
+        
         $sistemaArquivos = new SistemasArquivos();
         $sistemaArquivos->downloadArquivo('imports/' . $importacao->arquivo);
         exit;

@@ -7,7 +7,7 @@
     
     <table class="min-w-full bg-white">
         <thead>
-            <tr>
+            <tr class="bg-gray-200 text-gray-700">
                 <th class="py-2 px-4 border-b border-gray-200 text-left">ID</th>
                 <th class="py-2 px-4 border-b border-gray-200 text-left">Nome do Arquivo</th>
                 <th class="py-2 px-4 border-b border-gray-200 text-left">Tipo</th>

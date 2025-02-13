@@ -9,12 +9,15 @@ use Src\Core\Router;
 
 use Src\Controllers\PedidoController;
 use Src\Controllers\ClienteController;
+use Src\Controllers\HomeController;
 use Src\Controllers\ProdutoController;
 use Src\Controllers\PromocaoController;
 use Src\Controllers\ImportacaoController;
 
 $request = new Request();
 $router = new Router();
+
+$router->addRoute('GET', '', [HomeController::class, 'index']);
 
 $router->addRoute('GET', 'pedidos', [PedidoController::class, 'index']);
 $router->addRoute('GET', 'pedidos/create', [PedidoController::class, 'create']);

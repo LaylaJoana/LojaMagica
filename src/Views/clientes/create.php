@@ -19,8 +19,8 @@
     </script>
 </head>
 <body class="bg-gray-100 p-6">
-    <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-        <h1 class="text-2xl font-bold mb-4 text-center text-green-600">Cadastrar Cliente</h1>
+ <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold mb-4">Cadastrar Cliente</h1>
         <form action="/clientes/new" method="POST">
             <div class="mb-6">
                 <label for="nome" class="block text-gray-700 text-sm font-semibold mb-2">Nome:</label>
@@ -40,11 +40,29 @@
 
             <div class="mb-6">
                 <label for="telefone" class="block text-gray-700 text-sm font-semibold mb-2">Telefone:</label>
-                <input type="tel" id="telefone" name="telefone" class="w-full bg-transparent text-sm text-gray-700 border border-slate-200 rounded p-3 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm" required>
+                <input type="tel" id="telefone" name="telefone" class="w-full bg-transparent text-sm text-gray-700 border border-slate-200 rounded p-3 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm" oninput="validatePhone()" required>
+                <p id="phone-error" class="text-red-600 text-xs hidden">Por favor, insira um telefone válido.</p>
             </div>
+            <script>
+                function validatePhone() {
+                    const phone = document.getElementById('telefone').value;
+                    const phonePattern = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+                    const phoneError = document.getElementById('phone-error');
+                    if (!phone.match(phonePattern)) {
+                        phoneError.classList.remove('hidden');
+                    } else {
+                        phoneError.classList.add('hidden');
+                    }
+                }
 
-            <div class="flex justify-center mt-4">
-                <button type="submit" class="bg-green-600 text-white py-2 px-6 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-300">Cadastrar Cliente</button>
+                document.getElementById('telefone').addEventListener('input', function (e) {
+                    let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+                    e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+                });
+            </script>
+
+            <div class="flex justify-between items-center mt-4">
+            <button type="submit" class="button bg-green-500 text-white py-2 px-4 rounded-md shadow-sm hover:bg-green-700">Cadastrar Cliente</button>
             </div>
         </form>
     </div>
