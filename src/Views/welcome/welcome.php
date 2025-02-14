@@ -44,6 +44,22 @@
     <div class="container">
         <h1>Bem-vindo à Loja Mágica Tecnologia</h1>
         <p>Explore nossos produtos e promoções!</p>
+        
+        <div class="login-form">
+            <form action="login.php" method="post">
+                <div>
+                    <label for="username">Usuário:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div>
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div>
+                    <button type="submit">Entrar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html>

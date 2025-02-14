@@ -11,6 +11,9 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install pdo pdo_mysql zip
 
+# Habilitar o módulo mod_rewrite do Apache
+RUN a2enmod rewrite
+
 # Instale o Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
