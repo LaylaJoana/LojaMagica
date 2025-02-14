@@ -1,8 +1,8 @@
-RewriteEngine On
+<IfModule mod_rewrite.c>
+    RewriteEngine On
 
-# Check if the requested file exists
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-
-# If the file doesn't exist, route the request to index.php
-RewriteRule ^(.*)$ index.php [QSA,L]
+    # Redirecionar todas as requisições para index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>

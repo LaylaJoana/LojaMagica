@@ -4,6 +4,7 @@ session_start();
 
 require __DIR__ . '/../vendor/autoload.php';
 
+use Src\Api\Controllers\IntegracaoController;
 use Src\Core\Request;
 use Src\Core\Router;
 
@@ -55,6 +56,12 @@ $router->addRoute('GET', 'importacoes', [ImportacaoController::class, 'index']);
 $router->addRoute('POST', 'importacoes/upload', [ImportacaoController::class, 'importar']);
 $router->addRoute('GET', 'importacoes/download/{id}', [ImportacaoController::class, 'download']);
 
+$router->addRoute('POST', 'api/integracao/pedidos', [IntegracaoController::class, 'importar']);
+
+if (strpos($request->getUri(), 'api/') === 0) {
+    $router->dispatch($request);
+    exit;
+}
 
 require '../src/Views/layouts/app.php';
 ?>

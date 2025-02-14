@@ -7,9 +7,11 @@ class Cliente extends Model {
     protected $table = 'clientes';
 
     protected $attributes = [
+        'tipo',
         'nome',
         'email',
         'telefone',
-        'endereco'
+        'endereco',
+        'receber_emails'
     ];
 }

@@ -1,9 +1,12 @@
 services:
   web:
-    image: php:8.2-apache
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
     container_name: loja_magica_web
     volumes:
       - .:/var/www/html
+      - ./docker/httpd.conf:/etc/apache2/sites-available/000-default.conf
     ports:
       - "8080:80"
     depends_on:
@@ -15,22 +18,14 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: loja_magica
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_unicode_ci
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./sql:/docker-entrypoint-initdb.d
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: loja_magica_phpmyadmin
-    environment:
-      PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: root
-    ports:
-      - "8081:80"
-    depends_on:
-      - db
+      - ./docker/sql:/docker-entrypoint-initdb.d
 
 volumes:
   db_data:
+  web_data:

@@ -39,23 +39,11 @@ class ImportacaoController
             $pedidoValor = $dado[5];
 
             if ($clienteNome && $clienteEmail) {
-                $cliente = Cliente::where('email', $clienteEmail);
 
-                if (!$cliente) {
-                    $cliente = Cliente::create([
-                        'nome' => $clienteNome,
-                        'email' => $clienteEmail,
-                        'telefone' => '',
-                        'endereco' => ''
-                    ]);
-                } else {
-                    $cliente = Cliente::update([
-                        'id' => $cliente[0]->id,
-                        'nome' => $clienteNome
-                    ], ['nome']);
-                }
+                $cliente = Cliente::findBy('email', $clienteEmail);
 
                 if ($cliente && ($pedidoProduto && $pedidoData && (int) $pedidoValor)) {
+
                     $existeEstePedido = Connection::executeSql('
                         SELECT * FROM clientes c
                         LEFT JOIN pedidos p ON c.id = p.cliente_id
@@ -67,47 +55,38 @@ class ImportacaoController
                     if ($existeEstePedido) {
                         continue;
                     } else {
-                        $produto = Produto::where('nome', $pedidoProduto);
+                        $produtos = explode(';', $pedidoProduto);
 
                         $pedido = Pedido::create([
                             'cliente_id' => $cliente->id,
                             'status' => 'pendente',
-                            'valor_total' => $pedidoValor
+                            'valor_total' => $pedidoValor * count($produtos)
                         ]);
 
-                        $pedido->data_pedido = $pedidoData;
-                        $pedido->save();
-                        
-                        if ($produto) {
-                            $item = ItemPedido::create([
-                                'pedido_id' => $pedido->id,
-                                'produto_id' => $produto[0]->id,
-                                'quantidade' => 1,
-                                'preco_unitario' => $pedidoValor
-                            ]);
+                        foreach ($produtos as $produto) {
+                            $produto = Produto::findBy('nome', trim($produto));
 
-                            if ($item && $pedidoData >= date('Y-m-d') ) {
-                                $produto[0]->updateEstoque(-1);
+                            if ($produto) {
+                                $pedido->data_pedido = $pedidoData;
+                                $pedido->save();
+
+                                $item = ItemPedido::create([
+                                    'pedido_id' => $pedido->id,
+                                    'produto_id' => $produto->id,
+                                    'quantidade' => 1,
+                                    'preco_unitario' => $pedidoValor
+                                ]);
+
+                                if ($item && $pedidoData >= date('Y-m-d')) {
+                                    $produto->updateEstoque(-1);
+                                }
                             }
-                        } else {
-                            $produto = Produto::create([
-                                'nome' => $pedidoProduto,
-                                'estoque' => 0,
-                                'preco' => $pedidoValor,
-                            ]);
-
-                            $item = ItemPedido::create([
-                                'pedido_id' => $pedido->id,
-                                'produto_id' => $produto->id,
-                                'quantidade' => 1,
-                                'preco_unitario' => $pedidoValor
-                            ]);
                         }
                     }
                 }
             }
         }
-
+        
         Importacao::create([
             'arquivo' => basename($arquivo),
             'tipo' => pathinfo($arquivo)['extension']
@@ -122,7 +101,7 @@ class ImportacaoController
         if (!$importacao) {
             throw new Exception('Arquivo não encontrado.');
         }
-        
+
         $sistemaArquivos = new SistemasArquivos();
         $sistemaArquivos->downloadArquivo('imports/' . $importacao->arquivo);
         exit;

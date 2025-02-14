@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit3d013c7b32d0ebeca594c9c29da91898
+class ComposerStaticInitd162bc7a13a484e29511df7a693e0f0e
 {
     public static $files = array (
         '1276a898cba99888886f817fa1b48a65' => __DIR__ . '/../..' . '/src/Utils/View.php',
@@ -32,6 +32,10 @@ class ComposerStaticInit3d013c7b32d0ebeca594c9c29da91898
         'M' => 
         array (
             'Matrix\\' => 7,
+        ),
+        'I' => 
+        array (
+            'Integration\\' => 12,
         ),
         'C' => 
         array (
@@ -74,6 +78,10 @@ class ComposerStaticInit3d013c7b32d0ebeca594c9c29da91898
         array (
             0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
         ),
+        'Integration\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/integration',
+        ),
         'Composer\\Pcre\\' => 
         array (
             0 => __DIR__ . '/..' . '/composer/pcre/src',
@@ -91,9 +99,9 @@ class ComposerStaticInit3d013c7b32d0ebeca594c9c29da91898
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit3d013c7b32d0ebeca594c9c29da91898::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit3d013c7b32d0ebeca594c9c29da91898::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit3d013c7b32d0ebeca594c9c29da91898::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitd162bc7a13a484e29511df7a693e0f0e::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitd162bc7a13a484e29511df7a693e0f0e::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitd162bc7a13a484e29511df7a693e0f0e::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -7,6 +7,8 @@ CREATE TABLE clientes (
     email VARCHAR(255) NOT NULL,
     telefone VARCHAR(20) NULL,
     endereco TEXT NULL,
+    receber_emails ENUM('S', 'N') DEFAULT 'N' NOT NULL,
+    tipo ENUM('PJ', 'PF')  NULL, 
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP() NOT NULL,
     CONSTRAINT email UNIQUE (email)
 );
@@ -71,28 +73,44 @@ CREATE INDEX cliente_id ON clientes_promocoes (cliente_id);
 CREATE INDEX promocao_id ON clientes_promocoes (promocao_id);
 CREATE INDEX idx_promocoes_data ON promocoes (data_inicio, data_fim);
 
--- Inserir dados nas tabelas
-INSERT INTO clientes (nome, email, telefone, endereco) VALUES
-('João Silva', 'joao.silva@example.com', '123456789', 'Rua A, 123'),
-('Maria Oliveira', 'maria.oliveira@example.com', '987654321', 'Rua B, 456');
 
+-- Inserção dos clientes da Loja Mágica (PF)
+INSERT INTO clientes (tipo, nome, email, telefone, endereco) VALUES
+('PF', 'Alex Magus', 'alex@magia.com', NULL, NULL),
+('PF', 'Bianca Feiticeira', 'bianca@feiticeiro.com', NULL, NULL),
+('PF', 'Elena das Sombras', 'elena@sombras.com', NULL, NULL),
+('PF', 'Fábio Luminoso', 'fabio@luz.com', NULL, NULL),
+('PF', 'Gisela da Terra', 'gisela@terra.com', NULL, NULL),
+('PF', 'Hector Vento Veloz', 'hector@vento.com', NULL, NULL),
+('PF', 'Irina Flamejante', 'irina@fogo.com', NULL, NULL),
+('PF', 'João', 'joao@magia.com', NULL, NULL);
+
+-- Inserção das lojas de Pedidos_Outras_Lojas.xml (PJ)
+INSERT INTO clientes (tipo, nome, email, telefone, endereco) VALUES
+('PJ', 'Torre de Cristal', 'torredecristal@zirak.com', NULL, 'Planeta Zirak'),
+('PJ', 'Floresta Encantada', 'florestaencantada@elyria.com', NULL, 'Reino de Elyria'),
+('PJ', 'Deserto dos Ventos', 'desertodosventos@kaitos.com', NULL, 'Planeta Kaitos'),
+('PJ', 'Cavernas Submersas', 'cavernassubmersas@neptar.com', NULL, 'Mundo Aquático de Neptar'),
+('PJ', 'Vulcões Adormecidos', 'vulcoesadormecidos@ilhasdefogo.com', NULL, 'Ilhas de Fogo');
+
+
+-- Inserção dos produtos da Loja Mágica
 INSERT INTO produtos (nome, descricao, preco, estoque) VALUES
-('Produto 1', 'Descrição do Produto 1', 100.00, 50),
-('Produto 2', 'Descrição do Produto 2', 200.00, 30);
+('Varinha Mágica', 'Varinha para lançar feitiços poderosos', 120.00, 10),
+('Poção de Cura', 'Poção que restaura a saúde', 85.00, 20),
+('Livro dos Encantamentos', 'Livro com feitiços antigos', 150.00, 5),
+('Capa da Invisibilidade', 'Capa que torna o usuário invisível', 200.00, 3),
+('Cristal Encantado', 'Cristal com poderes mágicos', 200.00, 8),
+('Sementes Mágicas', 'Sementes que crescem instantaneamente', 60.00, 15),
+('Elixir de Velocidade', 'Elixir que aumenta a velocidade', 100.00, 12),
+('Orbe do Fogo', 'Orbe que controla o elemento fogo', 95.00, 7),
+('Mapa Estelar', 'Mapa que mostra constelações mágicas', 50.00, 9);
 
-INSERT INTO pedidos (cliente_id, status, valor_total) VALUES
-(1, 'pendente', 300.00),
-(2, 'processando', 200.00);
+-- Inserção dos produtos de outras lojas
+INSERT INTO produtos (nome, descricao, preco, estoque) VALUES
+('Cristais Místicos', 'Cristais com energia mística', 300.00, 50),
+('Poções de Juventude', 'Poções que rejuvenecem o usuário', 250.00, 30),
+('Areia Mágica', 'Areia com propriedades mágicas', 100.00, 70),
+('Pérolas de Energia', 'Pérolas que armazenam energia', 400.00, 40),
+('Lava Encantada', 'Lava com poderes mágicos', 500.00, 20);
 
-INSERT INTO itens_pedido (pedido_id, produto_id, quantidade, preco_unitario) VALUES
-(1, 1, 2, 100.00),
-(1, 2, 1, 200.00),
-(2, 2, 1, 200.00);
-
-INSERT INTO promocoes (nome, descricao, desconto, data_inicio, data_fim) VALUES
-('Promoção de Verão', 'Desconto especial de verão', 10.00, '2023-12-01', '2023-12-31'),
-('Promoção de Inverno', 'Desconto especial de inverno', 15.00, '2024-01-01', '2024-01-31');
-
-INSERT INTO clientes_promocoes (cliente_id, promocao_id) VALUES
-(1, 1),
-(2, 2);

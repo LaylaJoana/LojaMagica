@@ -7,8 +7,9 @@ use Src\Core\Request;
 use Src\Core\Router;
 use Src\Models\Cliente;
 
-class ClienteController {
-    
+class ClienteController
+{
+
     public function index(): void
     {
         view('/clientes/index', [
@@ -24,33 +25,35 @@ class ClienteController {
     public function new(Request $request): void
     {
         $post = $request->getAllParams();
-    
+
         if (empty($post['nome']) || empty($post['email'])) {
             flash('cliente_erro', 'Os campos nome e email são obrigatórios.');
             header('Location: /clientes/create');
             exit;
         }
-    
+
         if (!filter_var($post['email'], FILTER_VALIDATE_EMAIL)) {
             flash('cliente_erro', 'E-mail inválido.');
             header('Location: /clientes/create');
             exit;
         }
-    
+
         try {
             $cliente = Cliente::create([
+                'tipo' => trim($post['tipo']),
                 'nome' => trim($post['nome']),
                 'email' => trim($post['email']),
                 'endereco' => trim($post['endereco']),
-                'telefone' => trim($post['telefone'])
+                'telefone' => trim($post['telefone']),
+                'receber_emails' => isset($post['receber_emails']) ? 'S' : 'N'
             ]);
-    
+
             if ($cliente) {
                 flash('cliente_sucesso', 'Cliente cadastrado com sucesso!');
                 header('Location: /clientes');
                 exit;
             }
-    
+
             flash('cliente_erro', 'Erro ao cadastrar cliente.');
             header('Location: /clientes/create');
             exit;
@@ -91,22 +94,31 @@ class ClienteController {
 
         $cliente = Cliente::delete($id);
 
-        if($cliente) {
+        if ($cliente) {
             flash('cliente_sucesso', 'Cliente excluído com sucesso!');
             header('Location: /clientes');
             exit;
         }
     }
 
-    public function update(): void
+    public function update(Request $request): void
     {
-       $cliente = Cliente::update($_POST);
+        $post = $request->getAllParams();
+        
+        $cliente = Cliente::update([
+            'id' => $post['id'],
+            'tipo' => trim($post['tipo']),
+            'nome' => trim($post['nome']),
+            'email' => trim($post['email']),
+            'endereco' => trim($post['endereco']),
+            'telefone' => trim($post['telefone']),
+            'receber_emails' => isset($post['receber_emails']) ? 'S' : 'N'
+        ]);
 
-       if($cliente) {
-           flash('cliente_sucesso', 'Cliente atualizado com sucesso!');
-           header('Location: /clientes');
-           exit;
-       }
+        if ($cliente) {
+            flash('cliente_sucesso', 'Cliente atualizado com sucesso!');
+            header('Location: /clientes');
+            exit;
+        }
     }
-
 }

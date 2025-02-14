@@ -51,12 +51,9 @@ class PromocaoController
                         'Data de Início: ' . $promocao->data_inicio . '<br>' .
                         'Data de Fim: ' . $promocao->data_fim . '<br><br>' .
                         'Obrigado por comprar na Loja Mágica!';
-                    $emailSent = Email::send($cliente->email, $subject, $body);
 
-                    if ($emailSent) {
-                        flash('email_sucesso', 'Email enviado com sucesso!');
-                    } else {
-                        flash('email_erro', 'Erro ao enviar email.');
+                    if ($cliente->receber_emails == 'S') {
+                        Email::send($cliente->email, $subject, $body);
                     }
                 }
 
@@ -117,19 +114,16 @@ class PromocaoController
             foreach ($clientes as $cliente) {
                 $subject = 'Novidades e Promoções - Loja Mágica';
                 $body = 'Olá ' . $cliente->nome . ',<br><br>' .
-                    'A promoção'. $promocao->nome. 'mudou, fique por dentro  do que mudou!<br>' .
+                    'A promoção ' . $promocao->nome . ' mudou, fique por dentro  do que mudou!<br>' .
                     'Nome: ' . $promocao->nome . '<br>' .
                     'Descrição: ' . $promocao->descricao . '<br>' .
                     'Desconto: ' . $promocao->desconto . '%<br>' .
                     'Data de Início: ' . $promocao->data_inicio . '<br>' .
                     'Data de Fim: ' . $promocao->data_fim . '<br><br>' .
                     'Obrigado por comprar na Loja Mágica!';
-                $emailSent = Email::send($cliente->email, $subject, $body);
 
-                if ($emailSent) {
-                    flash('email_sucesso', 'Email enviado com sucesso!');
-                } else {
-                    flash('email_erro', 'Erro ao enviar email.');
+                if ($cliente->receber_emails == 'S') {
+                    Email::send($cliente->email, $subject, $body);
                 }
             }
             flash('promocao_sucesso', 'Promoção atualizada com sucesso!');

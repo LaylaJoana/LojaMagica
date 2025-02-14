@@ -10,6 +10,7 @@
             <thead>
                 <tr class="table-header bg-gray-200 text-gray-700">
                     <th class="py-3 px-4 text-left">Id</th>
+                    <th class="py-3 px-4 text-left">Tipo</th>
                     <th class="py-3 px-4 text-left">Nome</th>
                     <th class="py-3 px-4 text-left">Email</th>
                     <th class="py-3 px-4 text-left">Endereço</th>
@@ -26,6 +27,7 @@
             <?php foreach ($clientes as $cliente): ?>
                 <tr class="border-b hover:bg-gray-100 transition">
                     <td class="py-3 px-4 "><?= $cliente->id ?></td>
+                    <td class="py-3 px-4 "><?= $cliente->tipo ?></td>
                     <td class="py-3 px-4 "><?= $cliente->nome ?></td>
                     <td class="py-3 px-4 "><?= $cliente->email ?></td>
                     <td class="py-3 px-4 "><?= $cliente->endereco ?></td>

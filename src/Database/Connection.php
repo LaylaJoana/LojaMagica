@@ -11,7 +11,7 @@ abstract class Connection
     public static function getConn()
     {
         if (self::$conn == null) {
-            self::$conn = new PDO('mysql: host=localhost; dbname=loja_magica; charset=utf8;"', 'root', '');
+            self::$conn = new PDO('mysql:host=loja_magica_db;port=3306;dbname=loja_magica;charset=utf8', 'root', 'root');
         }
 
         return self::$conn;

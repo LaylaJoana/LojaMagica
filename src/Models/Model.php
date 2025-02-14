@@ -24,6 +24,19 @@ abstract class Model
         return $resultado;
     }
 
+    public static function findBy($campo, $valor)
+    {     
+        $con = Connection::getConn();
+        $sql = "SELECT * FROM " . (new static)->table . " WHERE {$campo} = :{$campo}";
+        $sql = $con->prepare($sql);
+        $sql->bindValue(":{$campo}", $valor, PDO::PARAM_STR);
+        $sql->execute();
+
+        $resultado = $sql->fetchObject(get_class(new static));
+
+        return $resultado;
+    }
+
     public static function all()
     {
         $con = Connection::getConn();
@@ -67,8 +80,6 @@ abstract class Model
 
     public static function update($dados, $columns = null): bool|object
     {
-
-       
         $con = Connection::getConn();
         $attrsBinds = self::getAttrsBinds($columns);
         $sql = "UPDATE " . (new static)->table . " SET " . $attrsBinds . " WHERE id = :id";

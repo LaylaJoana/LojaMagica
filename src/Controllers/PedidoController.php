@@ -74,13 +74,11 @@ class PedidoController {
             exit;
         }
 
-        $itens = ItemPedido::where('pedido_id', $id);
-
         view('/pedidos/edit', [
             'pedido' => $pedido,
             'clientes' => Cliente::all(),
             'produtos' => Produto::all(),
-            'itens' => $itens
+            'itens' => ItemPedido::where('pedido_id', $id)
         ]);
     }
 

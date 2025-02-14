@@ -12,7 +12,7 @@ class Email
         $mail = new PHPMailer(true);
 
         try {
-          
+
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com'; 
             $mail->SMTPAuth = true;
@@ -24,8 +24,9 @@ class Email
             $mail->setFrom('lojamagicatecnologia@gmail.com', 'Loja Mágica');
             $mail->addAddress($to);
 
+            $mail->CharSet = 'UTF-8';
             $mail->isHTML(true);
-            $mail->Subject = $subject;
+            $mail->Subject = mb_encode_mimeheader($subject, 'UTF-8', 'B', "\n");
             $mail->Body = $body;
 
             $mail->send();

@@ -62,12 +62,8 @@ class PedidoService
             $body = 'Olá ' . $cliente->nome . ',<br><br>Seu pedido foi atualizado com sucesso. O status do pedido é: ' . $pedido->status . '.<br><br>Obrigado por comprar na Loja Mágica!';
         }
     
-        $emailSent = Email::send($cliente->email, $subject, $body);
-
-        if ($emailSent) {
-            flash('email_sucesso', 'Email enviado com sucesso!');
-        } else {
-            flash('email_erro', 'Erro ao enviar email.');
+        if ($cliente->receber_emails == 'S') {
+            Email::send($cliente->email, $subject, $body);
         }
     }
 
