@@ -46,7 +46,7 @@ Este sistema foi desenvolvido para gerenciar pedidos de clientes, tanto pessoas 
 4. Inicie os serviços do Docker:
 
     ```sh
-    docker-compose up -d
+    docker-compose up -d --builder
     ```
 
 ## Inicialização do Banco de Dados
