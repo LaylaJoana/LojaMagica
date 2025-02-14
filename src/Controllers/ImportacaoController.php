@@ -92,6 +92,8 @@ class ImportacaoController
             'tipo' => pathinfo($arquivo)['extension']
         ]);
 
+        flash('success', 'Importação realizada com sucesso!');
+
         header('Location: /importacoes');
     }
 

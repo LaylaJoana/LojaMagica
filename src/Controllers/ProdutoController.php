@@ -22,13 +22,11 @@ class ProdutoController
         ]);
     }
 
-  
+
     public function new(Request $request): void
     {
-
-       
         $post = $request->getAllParams();
-    
+
         if (empty($post['nome']) || empty($post['preco']) || empty($post['estoque'])) {
             flash('produto_erro', 'Os campos nome, preço e estoque são obrigatórios.');
             header('Location: /produtos/create');
@@ -41,13 +39,12 @@ class ProdutoController
                 'preco' => trim($post['preco']),
                 'estoque' => trim($post['estoque'])
             ]);
-    
+
             if ($produto) {
-                flash('produto_sucesso', 'Produto cadastrado com sucesso!');
+                flash('success', 'Produto cadastrado com sucesso!');
                 header('Location: /produtos');
                 exit;
             }
-    
         } catch (Exception $e) {
             error_log('Erro ao cadastrar um produto: ' . $e->getMessage());
             flash('produto_erro', 'Erro ao cadastrar um produto Tente novamente.');
@@ -84,22 +81,28 @@ class ProdutoController
 
         $produto = Produto::delete($id);
 
-        if($produto) {
-            flash('produto_sucesso', 'Produto excluído com sucesso!');
+        if ($produto) {
+            flash('success', 'Produto excluído com sucesso!');
             header('Location: /produtos');
             exit;
         }
     }
 
-    public function update(): void
+    public function update(Request $request): void
     {
-       $produto = Produto::update($_POST);
+        $post = $request->getAllParams();
 
-       if($produto) {
-           flash('produto_sucesso', 'Cliente atualizado com sucesso!');
-           header('Location: /produtos');
-           exit;
-       }
+        $produto = Produto::update([
+            'id' => trim($post['id']),
+            'nome' => trim($post['nome']),
+            'preco' => trim($post['preco']),
+            'estoque' => trim($post['estoque'])
+        ]);
+
+        if ($produto) {
+            flash('success', 'Produto atualizado com sucesso!');
+            header('Location: /produtos');
+            exit;
+        }
     }
-
 }

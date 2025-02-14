@@ -53,7 +53,7 @@ class PedidoController {
 
             Connection::commit();
 
-            flash('pedido_sucesso', 'Pedido cadastrado com sucesso!');
+            flash('success', 'Pedido cadastrado com sucesso!');
             header('location: /pedidos');
         } catch (Exception $e) {
             Connection::rollBack();
@@ -97,7 +97,7 @@ class PedidoController {
         $pedido = Pedido::delete($id);
 
         if($pedido) {
-            flash('pedido_sucesso', 'Pedido excluído com sucesso!');
+            flash('success', 'Pedido excluído com sucesso!');
             header('Location: /pedidos');
             exit;
         }
@@ -124,7 +124,7 @@ class PedidoController {
 
             Connection::commit();
 
-            flash('pedido_sucesso', 'Pedido atualizado com sucesso!');
+            flash('success', 'Pedido atualizado com sucesso!');
             header('Location: /pedidos');
             exit;
         } catch (Exception $e) {

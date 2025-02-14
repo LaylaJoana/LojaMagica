@@ -39,7 +39,7 @@
 
             <div class="mb-6">
                 <label for="telefone" class="block text-gray-700 text-sm font-semibold mb-2">Telefone:</label>
-                <input type="tel" id="telefone" name="telefone" class="w-full bg-transparent text-sm text-gray-700 border border-slate-200 rounded p-3 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm" oninput="validatePhone()" required>
+                <input type="tel" id="telefone" name="telefone" class="w-full bg-transparent text-sm text-gray-700 border border-slate-200 rounded p-3 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm" onchange="validatePhone()" required>
                 <p id="phone-error" class="text-red-600 text-xs hidden">Por favor, insira um telefone válido.</p>
             </div>
 

@@ -20,6 +20,7 @@ services:
       MYSQL_DATABASE: loja_magica
       MYSQL_CHARSET: utf8mb4
       MYSQL_COLLATION: utf8mb4_unicode_ci
+      MYSQL_INITDB_SKIP_TZINFO: 1
     ports:
       - "3306:3306"
     volumes:

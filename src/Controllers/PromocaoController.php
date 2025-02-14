@@ -57,7 +57,7 @@ class PromocaoController
                     }
                 }
 
-                flash('promocao_sucesso', 'Promoção cadastrada com sucesso e emails enviados!');
+                flash('success', 'Promoção cadastrada com sucesso e emails enviados!');
                 header('Location: /promocoes');
                 exit;
             }
@@ -98,15 +98,24 @@ class PromocaoController
         $produto = Promocao::delete($id);
 
         if ($produto) {
-            flash('promocao_sucesso', 'Promoção excluída com sucesso!');
+            flash('success', 'Promoção excluída com sucesso!');
             header('Location: /promocoes');
             exit;
         }
     }
 
-    public function update(): void
+    public function update(Request $request): void
     {
-        $promocao = Promocao::update($_POST);
+        $post = $request->getAllParams();
+
+        $promocao = Promocao::update([
+            'id' => $post['id'],
+            'nome' => trim($post['nome']),
+            'descricao' => trim($post['descricao']),
+            'desconto' => $post['desconto'],
+            'data_inicio' => trim($post['data_inicio']),
+            'data_fim' => trim($post['data_fim'])
+        ]);
 
         if ($promocao) {
 
@@ -126,7 +135,7 @@ class PromocaoController
                     Email::send($cliente->email, $subject, $body);
                 }
             }
-            flash('promocao_sucesso', 'Promoção atualizada com sucesso!');
+            flash('success', 'Promoção atualizada com sucesso e emails enviados!');
             header('Location: /promocoes');
             exit;
         }

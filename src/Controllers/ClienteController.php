@@ -49,7 +49,7 @@ class ClienteController
             ]);
 
             if ($cliente) {
-                flash('cliente_sucesso', 'Cliente cadastrado com sucesso!');
+                flash('success', 'Cliente cadastrado com sucesso!');
                 header('Location: /clientes');
                 exit;
             }
@@ -95,7 +95,7 @@ class ClienteController
         $cliente = Cliente::delete($id);
 
         if ($cliente) {
-            flash('cliente_sucesso', 'Cliente excluído com sucesso!');
+            flash('success', 'Cliente excluído com sucesso!');
             header('Location: /clientes');
             exit;
         }
@@ -116,7 +116,7 @@ class ClienteController
         ]);
 
         if ($cliente) {
-            flash('cliente_sucesso', 'Cliente atualizado com sucesso!');
+            flash('success', 'Cliente atualizado com sucesso!');
             header('Location: /clientes');
             exit;
         }
